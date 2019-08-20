@@ -2,6 +2,8 @@ const express = require("express");
 
 const server = express();
 
+server.use(express.json());
+
 let numberOfRequests = 0; //Peguei da rocket
 const projects = [];
 
@@ -30,7 +32,15 @@ function logRequests(req, res, next) {
   return next();
 }
 
-server.use(express.json());
+function logRequests(req, res, next) {
+  numberOfRequests++;
+
+  console.log(`Número de requisições: ${numberOfRequests}`);
+
+  return next();
+}
+
+server.use(logRequests);
 
 server.get("/projects", (req, res) => {
   return res.json(projects);
